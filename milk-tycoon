@@ -130,19 +130,6 @@ if game.PlaceId == 10456811278 then
         end
     end
     
-    -- local AutoEventFarm = true
-    -- local AutoCollect = true
-    -- local AutoProcess = true
-    
-    -- while true do
-    --     MakeEventMilks()
-    --     task.wait()
-    --     CollectMilk()
-    --     wait(1)
-    --     ProcessMilk()
-    --     wait(1)
-    -- end
-    
     local HubTitle = "MZ Hub - "..game:GetFullName()
     local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source2.lua"))()
     local UI = Venyx.new({title=HubTitle})
@@ -219,7 +206,7 @@ if game.PlaceId == 10456811278 then
     })
     AutoBuySellSection:addToggle({
         title = "Auto Buy Sell Speed",
-        toggled = AutoBuySellSpeed,
+        toggled = BuySellSpeed,
         callback = function(value)
             AutoBuySellSpeed = value
             if AutoBuySellSpeed then
