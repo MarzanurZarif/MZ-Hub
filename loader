@@ -2,6 +2,100 @@ local AutoEventFarm = false
 local AutoCollect = false
 local AutoProcess = false
 
+local function HoldE()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
+end
+
+local function TeleportTo(PartName)
+    if PartName ~= nil then
+        local Part = game:GetService("Workspace"):WaitForChild("ProxParts"):FindFirstChild(PartName)
+        if Part and Part:FindFirstChild("ProxPart") then
+            game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Part:FindFirstChild("ProxPart").CFrame
+        end
+    end
+end
+
+local PlrTycoonFolder = nil
+local workBench = nil
+local function getPlrTycoonFolder()
+    for i, v in pairs(game:GetService("Workspace").Tycoons:GetChildren()) do
+        if v:FindFirstChild("Owner") and v:FindFirstChild("Owner").Value == game.Players.LocalPlayer.Name then
+            PlrTycoonFolder = v
+        end
+    end
+end
+getPlrTycoonFolder()
+workBench = PlrTycoonFolder:WaitForChild("Workbench").Main
+
+local function CollectMilk()
+    if AutoCollect then
+        for _, v in pairs(PlrTycoonFolder.Drops:GetChildren()) do
+            pcall(function()
+                for i, child in pairs(v:GetChildren()) do
+                    child.CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                    child.Transparency = 1
+                    wait()
+                end
+            end)
+            wait()
+        end
+        wait(1)
+    end
+end
+
+local function ProcessMilk()
+    if AutoProcess then
+        wait()
+        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 0)
+        wait()
+        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
+        wait()
+    end
+end
+
+local function GetItem(stuff)
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ResetCarry"):FireServer()
+    TeleportTo(stuff)
+    wait(1.5)
+    HoldE()
+    wait(1.5)
+    game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workBench.CFrame + Vector3.new(0, 6, 0)
+    wait(1.5)
+    HoldE()
+    wait(1.5)
+end
+
+local function MakeEventMilks()
+    if AutoEventFarm then
+        local Stuffs = {"Candy1", "Candy2", "Candy3"}
+        for i, stuff in pairs(Stuffs) do
+            repeat GetItem(stuff) until workBench.Parent.Guipart.BillboardGui.Main.Ingredient:FindFirstChild(stuff).ImageLabel.Visible == true
+        end
+        wait(9)
+        HoldE()
+        wait(1.5)
+        HoldE()
+        wait(1.5)
+        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Workspace"):FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.NavigationBeam.Attachment1.WorldCFrame
+        wait(1.5)
+        HoldE()
+        wait(18)
+    end
+end
+
+-- local AutoEventFarm = true
+-- local AutoCollect = true
+-- local AutoProcess = true
+
+-- while true do
+--     MakeEventMilks()
+--     wait()
+--     CollectMilk()
+--     wait(1)
+--     ProcessMilk()
+--     wait(1)
+-- end
+
 local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source2.lua"))()
 local UI = Venyx.new({title="MZ Hub - "..game.Name})
 
@@ -86,100 +180,6 @@ for theme, color in pairs(Themes) do
         end
     })
 end
-
--- local AutoEventFarm = true
--- local AutoCollect = true
--- local AutoProcess = true
-
-local function HoldE()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
-end
-
-local function TeleportTo(PartName)
-    if PartName ~= nil then
-        local Part = game:GetService("Workspace"):WaitForChild("ProxParts"):FindFirstChild(PartName)
-        if Part and Part:FindFirstChild("ProxPart") then
-            game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Part:FindFirstChild("ProxPart").CFrame
-        end
-    end
-end
-
-local PlrTycoonFolder = nil
-local workBench = nil
-local function getPlrTycoonFolder()
-    for i, v in pairs(game:GetService("Workspace").Tycoons:GetChildren()) do
-        if v:FindFirstChild("Owner") and v:FindFirstChild("Owner").Value == game.Players.LocalPlayer.Name then
-            PlrTycoonFolder = v
-        end
-    end
-end
-getPlrTycoonFolder()
-workBench = PlrTycoonFolder:WaitForChild("Workbench").Main
-
-local function CollectMilk()
-    if AutoCollect then
-        for _, v in pairs(PlrTycoonFolder.Drops:GetChildren()) do
-            pcall(function()
-                for i, child in pairs(v:GetChildren()) do
-                    child.CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
-                    child.Transparency = 1
-                    wait()
-                end
-            end)
-            wait()
-        end
-        wait(1)
-    end
-end
-
-local function ProcessMilk()
-    if AutoProcess then
-        wait()
-        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 0)
-        wait()
-        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
-        wait()
-    end
-end
-
-local function GetItem(stuff)
-    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ResetCarry"):FireServer()
-    TeleportTo(stuff)
-    wait(1.5)
-    HoldE()
-    wait(1.5)
-    game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workBench.CFrame + Vector3.new(0, 6, 0)
-    wait(1.5)
-    HoldE()
-    wait(1.5)
-end
-
-local function MakeEventMilks()
-    if AutoEventFarm then
-        local Stuffs = {"Candy1", "Candy2", "Candy3"}
-        for i, stuff in pairs(Stuffs) do
-            repeat GetItem(stuff) until workBench.Parent.Guipart.BillboardGui.Main.Ingredient:FindFirstChild(stuff).ImageLabel.Visible == true
-        end
-        wait(9)
-        HoldE()
-        wait(1.5)
-        HoldE()
-        wait(1.5)
-        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Workspace"):FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.NavigationBeam.Attachment1.WorldCFrame
-        wait(1.5)
-        HoldE()
-        wait(18)
-    end
-end
-
--- while true do
---     MakeEventMilks()
---     wait()
---     CollectMilk()
---     wait(1)
---     ProcessMilk()
---     wait(1)
--- end
 
 UI:SelectPage({
     page = UI.pages[1], 
