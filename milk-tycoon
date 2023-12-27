@@ -167,7 +167,7 @@ if game.PlaceId == 10456811278 then
         callback = function(value)
             AutoUpgrade = value
             if AutoUpgrade then
-                repeat ProcessMilk() until AutoUpgrade == false
+                repeat UpgradeCows() until AutoUpgrade == false
             end
         end
     })
