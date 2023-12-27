@@ -3,6 +3,12 @@ if game.PlaceId == 10456811278 then
     local AutoEventFarm = false
     local AutoCollect = false
     local AutoProcess = false
+
+    local AutoUpgrade = false
+    local AutoBuyProcessSpeed = false
+    local BuyProcessSpeed = "1"
+    local AutoBuySellSpeed = false
+    local BuySellSpeed = "1"
     
     local function HoldE()
         game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
@@ -52,6 +58,30 @@ if game.PlaceId == 10456811278 then
             wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
             wait()
+        end
+    end
+
+    local function UpgradeCows()
+        if AutoUpgrade then
+            wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Upgrade, 0)
+            wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Upgrade, 1)
+            wait(1)
+        end
+    end
+
+    local function BuySpeed(Mode, Bulk)
+        if (AutoBuyProcessSpeed or AutoBuySellSpeed) and (Mode == "Processor" or Mode == "Sell") and (Bulk == "1" or Bulk == "10") then
+            local Part = Mode..Bulk or Mode.."1"
+            if Bulk == "1" then
+                Part == Mode.."Tick"
+            end
+            wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 0)
+            wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 1)
+            wait(1)
         end
     end
     
@@ -104,8 +134,9 @@ if game.PlaceId == 10456811278 then
     
     local MainPage = UI:addPage({title="Main"})
     local SettingsPage = UI:addPage({title="Settings"})
-    local AutoTaskSection = MainPage:addSection({title="Auto"})
-    local AutoEventSection = MainPage:addSection({title="Auto Event"})
+    local AutoTaskSection = MainPage:addSection({title="Collection"})
+    local AutoBuySection = MainPage:addSection({title="Purchase"})
+    local AutoEventSection = MainPage:addSection({title="Event"})
     local UISettingsSection = SettingsPage:addSection({title="UI"})
     
     AutoTaskSection:addToggle({
@@ -129,9 +160,60 @@ if game.PlaceId == 10456811278 then
             end
         end
     })
+
+    AutoBuySection:addToggle({
+        title = "Auto Upgrade Cows",
+        toggled = AutoUpgrade,
+        callback = function(value)
+            AutoUpgrade = value
+            if AutoUpgrade then
+                repeat ProcessMilk() until AutoUpgrade == false
+            end
+        end
+    })
+
+    local dropdownContent = {"1", "10"}
+
+    AutoBuySection:addDropdown({
+        title = "Buy Processor Speed Mode",
+        list = dropdownContent,
+        default = "1",
+        callback = function(text)
+            BuyProcessSpeed = text
+        end
+    })
+    AutoBuySection:addToggle({
+        title = "Auto Buy Processor Speed",
+        toggled = AutoBuyProcessSpeed,
+        callback = function(value)
+            AutoBuyProcessSpeed = value
+            if AutoBuyProcessSpeed then
+                repeat BuySpeed("Processor", BuyProcessSpeed) until AutoBuyProcessSpeed == false
+            end
+        end
+    })
+
+    AutoBuySection:addDropdown({
+        title = "Buy Sell Speed Mode",
+        list = dropdownContent,
+        default = "1",
+        callback = function(text)
+            BuySellSpeed = text
+        end
+    })
+    AutoBuySection:addToggle({
+        title = "Auto Buy Sell Speed",
+        toggled = AutoBuySellSpeed,
+        callback = function(value)
+            AutoBuySellSpeed = value
+            if AutoBuySellSpeed then
+                repeat BuySpeed("Sell", BuySellSpeed) until AutoBuySellSpeed == false
+            end
+        end
+    })
     
     AutoEventSection:addToggle({
-        title = "Auto Event",
+        title = "AutoFarm Event",
         toggled = AutoEventFarm,
         callback = function(value)
             AutoEventFarm = value
