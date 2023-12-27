@@ -87,9 +87,9 @@ for theme, color in pairs(Themes) do
     })
 end
 
-local AutoEventFarm = true
-local AutoCollect = true
-local AutoProcess = true
+-- local AutoEventFarm = true
+-- local AutoCollect = true
+-- local AutoProcess = true
 
 local function HoldE()
     game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
