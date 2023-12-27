@@ -122,6 +122,7 @@ local function CollectMilk()
             pcall(function()
                 for i, child in pairs(v:GetChildren()) do
                     child.CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                    child.Transparency = 1
                     wait()
                 end
             end)
@@ -171,14 +172,14 @@ local function MakeEventMilks()
     end
 end
 
-while true do
-    MakeEventMilks()
-    wait()
-    CollectMilk()
-    wait(1)
-    ProcessMilk()
-    wait(1)
-end
+-- while true do
+--     MakeEventMilks()
+--     wait()
+--     CollectMilk()
+--     wait(1)
+--     ProcessMilk()
+--     wait(1)
+-- end
 
 UI:SelectPage({
     page = UI.pages[1], 
