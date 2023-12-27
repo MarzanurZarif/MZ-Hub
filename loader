@@ -1,67 +1,52 @@
--- // Initialising the UI
-local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source2.lua"))()
-local UI = Venyx.new({
-    title = "Venyx"
-})
+local AutoEventFarm = false
+local AutoCollect = false
+local AutoProcess = false
 
--- // Themes
-local Themes = {
-    Background = Color3.fromRGB(24, 24, 24),
-    Glow = Color3.fromRGB(0, 0, 0),
-    Accent = Color3.fromRGB(10, 10, 10),
-    LightContrast = Color3.fromRGB(20, 20, 20),
-    DarkContrast = Color3.fromRGB(14, 14, 14),  
-    TextColor = Color3.fromRGB(255, 255, 255)
-}
+local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source.lua"))()
+local UI = Venyx.new("MZ Hub - "..game.Name)
 
--- // Test Page
-local Test = UI:addPage({
-    title = "Test",
-    icon = 5012544693
-})
+local MainPage = UI:addPage("Main")
+local SettingsPage = UI:addPage("Settings")
+local AutoTaskSection = MainPage:addSection("Auto")
+local AutoEventSection = MainPage:addSection("Auto Event")
+local UISettingsSection = SettingsPage:addSection("UI")
 
--- // Sections for Test Page
-local SectionA = Test:addSection({
-    title = "Section A"
-})
-local SectionB = Test:addSection({
-    title = "Section B"
-})
-
--- // Section A UI Elements
-SectionA:addToggle({
-    title = "Toggle",
+AutoTaskSection:addToggle({
+    title = "Auto Collect Milk",
+    toggled = AutoCollect,
     callback = function(value)
-        print("Toggled", value)
-    end
-})
-
-SectionA:addButton({
-    title = "Button",
-    callback = function()
-        print("Clicked")
-    end
-})
-
-SectionA:addTextbox({
-    title = "Notification",
-    default = "Default",
-    callback = function(value, focusLost)
-        print("Input", value)
-
-        if (focusLost) then
-            UI:Notify({
-                title = "Title",
-                text = value
-            })
+        AutoCollect = value
+        if AutoCollect then
+            repeat CollectMilk() until AutoCollect == false
         end
     end
 })
 
--- // Section B UI Elements
-SectionB:addKeybind({
+AutoTaskSection:addToggle({
+    title = "Auto Process Milk",
+    toggled = AutoProcess,
+    callback = function(value)
+        AutoProcess = value
+        if AutoProcess then
+            repeat ProcessMilk() until AutoProcess == false
+        end
+    end
+})
+
+AutoEventSection:addToggle({
+    title = "Auto Event",
+    toggled = AutoEventFarm,
+    callback = function(value)
+        AutoEventFarm = value
+        if AutoEventFarm then
+            repeat MakeEventMilks() until AutoEventFarm == false
+        end
+    end
+})
+
+UISettingsSection:addKeybind({
     title = "Toggle Keybind",
-    key = Enum.KeyCode.One,
+    key = Enum.KeyCode.LeftControl,
     callback = function()
         print("Activated Keybind")
         UI:toggle()
@@ -71,55 +56,17 @@ SectionB:addKeybind({
     end
 })
 
-SectionB:addColorPicker({
-    title = "ColorPicker",
-    default = Color3.fromRGB(50, 50, 50)
-})
-
-SectionB:addColorPicker({
-    title = "ColorPicker2"
-})
-
-SectionB:addSlider({
-    title = "Slider",
-    default = 0,
-    min = -100,
-    max = 100,
-    callback = function(value)
-        print("Dragged", value)
+UISettingsSection:addButton({
+    title = "Destroy UI",
+    callback = function()
+        UI:Destroy()
     end
 })
 
-local dropdownContent = {"Hello", "World", "Hello World", "Word", 1, 2, 3} -- // To save me from keep on doing this
-SectionB:addDropdown({
-    title = "Dropdown",
-    list = dropdownContent
-})
-
-SectionB:addDropdown({
-    title = "Dropdown",
-    list = dropdownContent,
-    callback = function(text)
-        print("Selected", text)
-    end
-})
-
-SectionB:addButton({
-    title = "Button"
-})
-
--- // Color Theme Customisation Page
-local Theme = UI:addPage({
-    title = "Theme",
-    icon = 5012544693
-})
-
--- // Section for the Color Theme Customisation Page
-local Colors = Theme:addSection({
+local Colors = UISettingsSection:addSection({
     title = "Colors"
 })
 
--- // Adding a color picker for each type of theme customisable
 for theme, color in pairs(Themes) do
     Colors:addColorPicker({
         title = theme,
@@ -133,7 +80,86 @@ for theme, color in pairs(Themes) do
     })
 end
 
--- // Load
+local function HoldE()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
+end
+
+local function TeleportTo(PartName)
+    if PartName ~= nil then
+        local Part = game:GetService("Workspace"):WaitForChild("ProxParts"):FindFirstChild(PartName)
+        if Part and Part:FindFirstChild("ProxPart") then
+            game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Part:FindFirstChild("ProxPart").CFrame
+        end
+    end
+end
+
+local PlrTycoonFolder = nil
+local workBench = nil
+local function getPlrTycoonFolder()
+    for i, v in pairs(game:GetService("Workspace").Tycoons:GetChildren()) do
+        if v:FindFirstChild("Owner") and v:FindFirstChild("Owner").Value == game.Players.LocalPlayer.Name then
+            PlrTycoonFolder = v
+        end
+    end
+end
+getPlrTycoonFolder()
+workBench = PlrTycoonFolder:WaitForChild("Workbench").Main
+
+local function CollectMilk()
+    if AutoCollect then
+        for _, v in pairs(PlrTycoonFolder.Drops:GetChildren()) do
+            pcall(function()
+                for i, child in pairs(v:GetChildren()) do
+                    child.CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+                    wait()
+                end
+            end)
+            wait()
+        end
+        wait(1)
+    end
+end
+
+local function ProcessMilk()
+    if AutoProcess then
+        wait()
+        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 0)
+        wait()
+        firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
+        wait()
+    end
+end
+
+local function GetItem(stuff)
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ResetCarry"):FireServer()
+    TeleportTo(stuff)
+    wait(1.5)
+    HoldE()
+    wait(1.5)
+    game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = workBench.CFrame + Vector3.new(0, 6, 0)
+    wait(1.5)
+    HoldE()
+    wait(1.5)
+end
+
+local function MakeEventMilks()
+    if AutoEventFarm then
+        local Stuffs = {"Candy1", "Candy2", "Candy3"}
+        for i, stuff in pairs(Stuffs) do
+            repeat GetItem(stuff) until workBench.Parent.Guipart.BillboardGui.Main.Ingredient:FindFirstChild(stuff).ImageLabel.Visible == true
+        end
+        wait(9)
+        HoldE()
+        wait(1.5)
+        HoldE()
+        wait(1.5)
+        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game:GetService("Workspace"):FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.NavigationBeam.Attachment1.WorldCFrame
+        wait(1.5)
+        HoldE()
+        wait(18)
+    end
+end
+
 UI:SelectPage({
     page = UI.pages[1], 
     toggle = true
