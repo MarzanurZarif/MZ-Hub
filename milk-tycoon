@@ -206,7 +206,7 @@ if game.PlaceId == 10456811278 then
     })
     AutoBuySellSection:addToggle({
         title = "Auto Buy Sell Speed",
-        toggled = BuySellSpeed,
+        toggled = AutoBuySellSpeed,
         callback = function(value)
             AutoBuySellSpeed = value
             if AutoBuySellSpeed then
