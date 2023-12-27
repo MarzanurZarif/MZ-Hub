@@ -11,7 +11,7 @@ local AutoTaskSection = MainPage:addSection("Auto")
 local AutoEventSection = MainPage:addSection("Auto Event")
 local UISettingsSection = SettingsPage:addSection("UI")
 
-SectionA:addToggle({
+AutoTaskSection:addToggle({
     title = "Toggle",
     callback = function(value)
         AutoCollect = value
