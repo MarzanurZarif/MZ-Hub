@@ -3,7 +3,7 @@ local AutoCollect = false
 local AutoProcess = false
 
 local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source2.lua"))()
-local UI = Venyx.new("MZ Hub - "..game.Name)
+local UI = Venyx.new({title="MZ Hub - "..game.Name})
 
 local MainPage = UI:addPage({title="Main"})
 local SettingsPage = UI:addPage({title="Settings"})
