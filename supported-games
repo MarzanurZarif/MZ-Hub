@@ -1,8 +1,5 @@
 _G.MZ_SupportedGames = {}
 
-table.insert(_G.MZ_SupportedGames, {
-    PlaceID = 10456811278, -- Milk Tycoon
-    Name = game:GetService("MarketplaceService"):GetProductInfo(10456811278).Name
-})
+table.insert(_G.MZ_SupportedGames, 10456811278) -- Milk Tycoon
 
 return _G.MZ_SupportedGames
