@@ -1,8 +1,6 @@
 local supportedGames = loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/supported-games'))()
-print(supportedGames)
 
 for i, v in pairs(supportedGames) do
-    print(v.PlaceID, v.Initial)
     if v.PlaceID == game.PlaceId then
         loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/' .. v.Initial))()
         return
