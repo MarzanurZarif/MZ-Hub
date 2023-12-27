@@ -57,7 +57,7 @@ if game.PlaceId == 10456811278 then
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 0)
             task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
-            task.wait()
+            wait(1)
         end
     end
 
