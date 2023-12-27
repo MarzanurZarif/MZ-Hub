@@ -1,5 +1,9 @@
-if game.PlaceId == 10456811278 then -- Milk Tycoon
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/milk-tycoon'))()
-else
+local supportedGames =  loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/supported-games'))()
+
+for i, v in pairs(supportedGames) do
+    if v.PlaceID == game.PlaceId then
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/' .. v.Initial))()
+        return
+    end
     print("Game not supported yet...")
 end
