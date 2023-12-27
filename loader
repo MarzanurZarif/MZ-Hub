@@ -11,6 +11,17 @@ local AutoTaskSection = MainPage:addSection("Auto")
 local AutoEventSection = MainPage:addSection("Auto Event")
 local UISettingsSection = SettingsPage:addSection("UI")
 
+SectionA:addToggle({
+    title = "Toggle",
+    callback = function(value)
+        AutoCollect = value
+        if AutoCollect then
+            repeat CollectMilk() until AutoCollect == false
+        end
+    end
+})
+
+
 AutoTaskSection:addToggle({
     title = "Auto Collect Milk",
     toggled = AutoCollect,
