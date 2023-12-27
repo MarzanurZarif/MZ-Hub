@@ -1,5 +1,8 @@
 _G.MZ_SupportedGames = {}
 
-table.insert(_G.MZ_SupportedGames, 10456811278) -- Milk Tycoon
+table.insert(_G.MZ_SupportedGames, {
+    PlaceID = 10456811278,
+    Initial = "milk-tycoon"
+}) -- Milk Tycoon
 
 return _G.MZ_SupportedGames
