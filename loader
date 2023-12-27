@@ -5,22 +5,11 @@ local AutoProcess = false
 local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source.lua"))()
 local UI = Venyx.new("MZ Hub - "..game.Name)
 
-local MainPage = UI:addPage("Main")
-local SettingsPage = UI:addPage("Settings")
-local AutoTaskSection = MainPage:addSection("Auto")
-local AutoEventSection = MainPage:addSection("Auto Event")
-local UISettingsSection = SettingsPage:addSection("UI")
-
-AutoTaskSection:addToggle({
-    title = "Toggle",
-    callback = function(value)
-        AutoCollect = value
-        if AutoCollect then
-            repeat CollectMilk() until AutoCollect == false
-        end
-    end
-})
-
+local MainPage = UI:addPage({title="Main"})
+local SettingsPage = UI:addPage({title="Settings"})
+local AutoTaskSection = MainPage:addSection({title="Auto"})
+local AutoEventSection = MainPage:addSection({title="Auto Event"})
+local UISettingsSection = SettingsPage:addSection({title="UI"})
 
 AutoTaskSection:addToggle({
     title = "Auto Collect Milk",
@@ -90,6 +79,10 @@ for theme, color in pairs(Themes) do
         end
     })
 end
+
+local AutoEventFarm = true
+local AutoCollect = true
+local AutoProcess = true
 
 local function HoldE()
     game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.E,false,game)
@@ -169,6 +162,15 @@ local function MakeEventMilks()
         HoldE()
         wait(18)
     end
+end
+
+while true do
+    MakeEventMilks()
+    wait()
+    CollectMilk()
+    wait(1)
+    ProcessMilk()
+    wait(1)
 end
 
 UI:SelectPage({
