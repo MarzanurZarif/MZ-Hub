@@ -39,7 +39,7 @@ local function CollectMilk()
             end)
             wait()
         end
-        wait(1)
+        wait()
     end
 end
 
