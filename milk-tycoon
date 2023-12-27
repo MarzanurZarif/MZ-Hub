@@ -42,44 +42,58 @@ if game.PlaceId == 10456811278 then
                     for i, child in pairs(v:GetChildren()) do
                         child.CFrame = game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
                         child.Transparency = 1
-                        wait()
+                        task.wait()
                     end
                 end)
-                wait()
+                task.wait()
             end
-            wait()
+            task.wait()
         end
     end
     
     local function ProcessMilk()
         if AutoProcess then
-            wait()
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 0)
-            wait()
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Process, 1)
-            wait()
+            task.wait()
         end
     end
 
     local function UpgradeCows()
         if AutoUpgrade then
-            wait()
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Upgrade, 0)
-            wait()
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons.Upgrade, 1)
             wait(1)
         end
     end
 
-    local function BuySpeed(Mode, Bulk)
-        if (AutoBuyProcessSpeed or AutoBuySellSpeed) and (Mode == "Processor" or Mode == "Sell") and (Bulk == "1" or Bulk == "10") then
-            local Part = Mode..Bulk or Mode.."1"
+    local function BuyProcessorSpeed(Bulk)
+        if (AutoBuyProcessSpeed) and (Bulk == "1" or Bulk == "10") then
+            local Part = "Processor"..Bulk or "Processor".."1"
             if Bulk == "1" then
-                Part = Mode.."Tick"
+                Part = "ProcessorTick"
             end
-            wait()
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 0)
-            wait()
+            task.wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 1)
+            wait(1)
+        end
+    end
+
+    local function BuySellSpeed(Bulk)
+        if (AutoBuySellSpeed) and (Bulk == "1" or Bulk == "10") then
+            local Part = "Sell"..Bulk or "Sell".."1"
+            if Bulk == "1" then
+                Part = "SellTick"
+            end
+            task.wait()
+            firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 0)
+            task.wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 1)
             wait(1)
         end
@@ -121,7 +135,7 @@ if game.PlaceId == 10456811278 then
     
     -- while true do
     --     MakeEventMilks()
-    --     wait()
+    --     task.wait()
     --     CollectMilk()
     --     wait(1)
     --     ProcessMilk()
@@ -135,7 +149,8 @@ if game.PlaceId == 10456811278 then
     local MainPage = UI:addPage({title="Main"})
     local SettingsPage = UI:addPage({title="Settings"})
     local AutoTaskSection = MainPage:addSection({title="Collection"})
-    local AutoBuySection = MainPage:addSection({title="Purchase"})
+    local AutoBuyProcessorSection = MainPage:addSection({title="Processor Speed"})
+    local AutoBuySellSection = MainPage:addSection({title="Sell Speed"})
     local AutoEventSection = MainPage:addSection({title="Event"})
     local UISettingsSection = SettingsPage:addSection({title="UI"})
     
@@ -161,7 +176,7 @@ if game.PlaceId == 10456811278 then
         end
     })
 
-    AutoBuySection:addToggle({
+    AutoTaskSection:addToggle({
         title = "Auto Upgrade Cows",
         toggled = AutoUpgrade,
         callback = function(value)
@@ -174,7 +189,7 @@ if game.PlaceId == 10456811278 then
 
     local dropdownContent = {"1", "10"}
 
-    AutoBuySection:addDropdown({
+    AutoBuyProcessorSection:addDropdown({
         title = "Buy Processor Speed Mode",
         list = dropdownContent,
         default = BuyProcessSpeed,
@@ -182,18 +197,18 @@ if game.PlaceId == 10456811278 then
             BuyProcessSpeed = text
         end
     })
-    AutoBuySection:addToggle({
+    AutoBuyProcessorSection:addToggle({
         title = "Auto Buy Processor Speed",
         toggled = AutoBuyProcessSpeed,
         callback = function(value)
             AutoBuyProcessSpeed = value
             if AutoBuyProcessSpeed then
-                repeat BuySpeed("Processor", BuyProcessSpeed) until AutoBuyProcessSpeed == false
+                repeat BuyProcessorSpeed(BuyProcessSpeed) until AutoBuyProcessSpeed == false
             end
         end
     })
 
-    AutoBuySection:addDropdown({
+    AutoBuySellSection:addDropdown({
         title = "Buy Sell Speed Mode",
         list = dropdownContent,
         default = BuySellSpeed,
@@ -201,13 +216,13 @@ if game.PlaceId == 10456811278 then
             BuySellSpeed = text
         end
     })
-    AutoBuySection:addToggle({
+    AutoBuySellSection:addToggle({
         title = "Auto Buy Sell Speed",
         toggled = AutoBuySellSpeed,
         callback = function(value)
             AutoBuySellSpeed = value
             if AutoBuySellSpeed then
-                repeat BuySpeed("Sell", BuySellSpeed) until AutoBuySellSpeed == false
+                repeat BuySellSpeed(BuySellSpeed) until AutoBuySellSpeed == false
             end
         end
     })
