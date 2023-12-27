@@ -154,7 +154,10 @@ UISettingsSection:addKeybind({
 UISettingsSection:addButton({
     title = "Destroy UI",
     callback = function()
-        game:GetService("CoreGui"):FindFirstChild(HubTitle)
+        local GUI = game:GetService("CoreGui"):FindFirstChild(HubTitle)
+        if GUI then
+            GUI:Destroy()
+        end
     end
 })
 
