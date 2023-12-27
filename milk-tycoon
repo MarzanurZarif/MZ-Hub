@@ -122,7 +122,10 @@ if game.PlaceId == 10456811278 then
             wait(1.5)
             HoldE()
             wait(1.5)
-            repeat task.wait() until game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"):FindFirstChild("NavigationBeam")
+            repeat 
+                wait(1.5)
+                HoldE()
+            until game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"):FindFirstChild("NavigationBeam")
             game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").NavigationBeam.Attachment1.WorldCFrame
             wait(1.5)
             HoldE()
