@@ -75,7 +75,7 @@ if game.PlaceId == 10456811278 then
         if (AutoBuyProcessSpeed or AutoBuySellSpeed) and (Mode == "Processor" or Mode == "Sell") and (Bulk == "1" or Bulk == "10") then
             local Part = Mode..Bulk or Mode.."1"
             if Bulk == "1" then
-                Part == Mode.."Tick"
+                Part = Mode.."Tick"
             end
             wait()
             firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, PlrTycoonFolder.Buttons:FindFirstChild(Part), 0)
@@ -177,7 +177,7 @@ if game.PlaceId == 10456811278 then
     AutoBuySection:addDropdown({
         title = "Buy Processor Speed Mode",
         list = dropdownContent,
-        default = "1",
+        default = BuyProcessSpeed,
         callback = function(text)
             BuyProcessSpeed = text
         end
@@ -196,7 +196,7 @@ if game.PlaceId == 10456811278 then
     AutoBuySection:addDropdown({
         title = "Buy Sell Speed Mode",
         list = dropdownContent,
-        default = "1",
+        default = BuySellSpeed,
         callback = function(text)
             BuySellSpeed = text
         end
