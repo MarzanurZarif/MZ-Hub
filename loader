@@ -1,4 +1,4 @@
-if game.PlaceId == 10456811278 then
+if game.PlaceId == 10456811278 then -- Milk Tycoon
     loadstring(game:HttpGet('https://raw.githubusercontent.com/MarzanurZarif/MZ-Hub/main/milk-tycoon'))()
 else
     print("Game not supported yet...")
