@@ -96,8 +96,9 @@ end
 --     wait(1)
 -- end
 
+local HubTitle = "MZ Hub - "..game:GetFullName()
 local Venyx = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source2.lua"))()
-local UI = Venyx.new({title="MZ Hub - "..game.Name})
+local UI = Venyx.new({title=HubTitle})
 
 local MainPage = UI:addPage({title="Main"})
 local SettingsPage = UI:addPage({title="Settings"})
@@ -153,7 +154,7 @@ UISettingsSection:addKeybind({
 UISettingsSection:addButton({
     title = "Destroy UI",
     callback = function()
-        print("Ok")
+        game:GetService("CoreGui"):FindFirstChild(HubTitle)
     end
 })
 
